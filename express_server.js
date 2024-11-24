@@ -23,8 +23,10 @@ app.get("/urls/:id", (req, res) => {
         longURL: urlDatabase[req.params.id] }; //Retrieve the long URL for the given short URL ID
     res.render("urls_show", templateVars);
   });
-  
 
+app.get("/hello", (req, res) => {
+    res.send("<html><body>Hello <b>World</b></body></html>\n");
+  });
   
 app.get("/urls.json", (req, res) => {
     res.json(urlDatabase);
