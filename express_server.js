@@ -50,7 +50,7 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString(); // Generate the short URL ID
   const longURL = req.body.longURL; // Extract the long URL from the request body
-  console.log(req.body); // Log the POST request body to the console
+  console.log(`Generated short URL: ${shortURL}, Long URL: ${longURL}`); // Log the POST request body to the console
   res.send("Short URL generated!"); // placeholder
 });
 
