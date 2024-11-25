@@ -17,19 +17,9 @@
     <title>TinyApp</title>
   </head>
   <body>
-<!---syntax for including the header partial -->
-    <% include partials/_header %>
-
     <main style="margin: 1em;">
-      <h1>My URLs</h1>
-      
-      <!-- Link to shorten a new URL -->
-      <p>
-        <a href="#" class="btn btn-primary">Shorten a New URL</a>
-      </p>
-
-      <!-- Table for displaying URLs -->
-      <table class="table table-striped">
+      <h3>My URLs</h3>
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">Short URL ID</th>
@@ -40,15 +30,12 @@
           <% for (let id in urls) { %>
             <tr>
               <td><%= id %></td>
-              <td>
-                <a href="<%= urls[id] %>" target="_blank"><%= urls[id] %></a>
-              </td>
+              <td><%= urls[id] %></td>
             </tr>
           <% } %>
         </tbody>
       </table>
     </main>
-    
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
