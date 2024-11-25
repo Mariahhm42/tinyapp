@@ -8,8 +8,18 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-
+//middleware
 app.use(express.urlencoded({ extended: true }));
+
+//generate 6-character random alphanumeric string
+function generateRandomString() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
 
 //route handler for /urls
 app.get("/urls", (req, res) => {
@@ -36,10 +46,12 @@ app.get("/urls/:id", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
-
+//POST route to handle form submission
 app.post("/urls", (req, res) => {
+  const shortURL = generateRandomString(); // Generate the short URL ID
+  const longURL = req.body.longURL; // Extract the long URL from the request body
   console.log(req.body); // Log the POST request body to the console
-  res.send("Ok"); // placeholder
+  res.send("Short URL generated!"); // placeholder
 });
 
 //starts the server
