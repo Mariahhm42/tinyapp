@@ -3,11 +3,12 @@ const app = express();
 const PORT = 8080; // defines the default port 8080 the app will listen to
 
 app.set("view engine", "ejs"); //sets up EJS as the templating engine
-
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca", // shortURL => longURL mapping
   "9sm5xK": "http://www.google.com" // another shortURL => longURL mapping
 };
+
+
 //middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
 //function to generate 6-character random alphanumeric string
@@ -21,6 +22,7 @@ function generateRandomString() {
   return result; //returns the generated random string
 }
 
+
 //POST route to handle form submission
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString(); // Generate the short URL ID
@@ -31,25 +33,30 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`)//redirects to rrl/i:d and shwos the new url that is being created
 });
 
+
 //route handler for /urls
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
    
+
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
+
 
 // GET route to return the URL database as a JSON object
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase); // Return the urlDatabase as JSON
 });
 
+
 //ROUTE TO SHOW THE FORM (GET /URLS/NEW)
 app.get("/urls/new", (req, res) => {
   res.render("urls_new"); // Render the form for entering a new URL
 });
+
 
 //Route to show the URL details (GET /urls/:id)
 app.get("/urls/:id", (req, res) => {
@@ -65,6 +72,7 @@ app.get("/urls/:id", (req, res) => {
   }
 });
 
+
 // New GET route to handle short URL requests and redirect to the long URL
 app.get("/u/:id", (req, res) => {
   const shortURL = req.params.id; // Get the short URL ID from the URL parameter
@@ -78,6 +86,15 @@ app.get("/u/:id", (req, res) => {
     res.status(404).send("Short URL not found.");
   }
 });
+
+
+//POST Route that removes a URL resource: (POST /urls/:id/delete)
+app.post("/urls/:id/delete", (req, res) => {
+  const shortURL = req.params.id; // Extract the short URL ID from the route parameter
+ delete urlDatabase[shortURL]; // Delete the short URL from the urlDatabase
+  res.redirect("/urls"); // Redirect the client back to the URLs index page
+});
+
 
 //starts the server
 app.listen(PORT, () => {
