@@ -12,12 +12,25 @@
   </head>
   <body>
     <%- include('partials/_header') %>
+    <h1>URL Details for <%= shortURL %></h1>
+    <p>Long URL: <%= longURL %></p>
+    
+    <!-- Form to update the long URL -->
+    <form method="POST" action="/urls/<%= shortURL %>">
+      <label for="longURL">New Long URL:</label>
+      <input type="text" name="longURL" id="longURL" value="<%= longURL %>" required>
+      <button type="submit">Update URL</button>
+    </form>
+    
+    <!-- Link back to the index page -->
+    <a href="/urls">Back to URL List</a>
+
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title">TinyURL for: <%= longURL %></h5>
         <p class="card-text">
-          Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
+          Short URL ID: <a href="/u/<%= shortURL %>"><%= shortURL %></a>
         </p>
       </div>
       <div class="card-footer text-muted"></div>
