@@ -11,6 +11,10 @@ const urlDatabase = {
 // Middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware to parse cookies
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // Function to generate 6-character random alphanumeric string
 // This will be used as the short URL ID
 function generateRandomString() {
@@ -91,7 +95,21 @@ app.post("/urls/:id", (req, res) => {
   res.redirect("/urls"); // Redirects to the URLs index after update
 });
 
+// POST route to handle login form submission
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  res.cookie('username', username);  // Set the cookie
+  res.redirect('/urls');  // Redirect back to the /urls page
+});
+
+// POST route for /login
+app.post("/login", (req, res) => {
+  const username = req.body.username; // Get username from the form
+  res.cookie("username", username);  // Set the cookie with the username
+  res.redirect("/urls");            // Redirect to /urls page
+});
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Tiny app listening on port ${PORT}!`);
+  console.log(`TinyApp listening on port ${PORT}!`);
 });
