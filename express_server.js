@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = 8080; // defines the default port 8080 the app will listen to
 
@@ -12,7 +13,6 @@ const urlDatabase = {
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware to parse cookies
-const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 // Function to generate 6-character random alphanumeric string
@@ -108,6 +108,23 @@ app.post("/login", (req, res) => {
   res.cookie("username", username);  // Set the cookie with the username
   res.redirect("/urls");            // Redirect to /urls page
 });
+
+//GET route to pass username to the template 
+app.get('/urls', (re, res) =>{
+  const templateVars = {
+    username: req.cookies["username"], //username is accessed from the cookies
+    urls: urlDatabase,
+  };
+  res.render('urls_index', templateVars);
+});
+
+app.get("/urls/new", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"],
+  };
+  res.render("urls_new", templateVars);
+});
+
 
 // Start the server
 app.listen(PORT, () => {
