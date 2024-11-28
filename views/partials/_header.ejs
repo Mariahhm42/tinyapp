@@ -20,13 +20,13 @@
 
       <div class="ml-auto">
         <% if (username) { %>
-          <!-- Displays the username and logout button when logged in -->
+          <!-- Display username and logout button when logged in -->
           <span class="text-light mr-3">Logged in as: <%= username %></span>
           <form method="POST" action="/logout" class="form-inline">
             <button class="btn btn-outline-light" type="submit">Logout</button>
           </form>
         <% } else { %>
-          <!-- Displays the login form when not logged in -->
+          <!-- Display login form when not logged in -->
           <form method="POST" action="/login" class="form-inline">
             <input
               type="text"
