@@ -110,7 +110,7 @@ app.post("/login", (req, res) => {
 });
 
 //GET route to pass username to the template 
-app.get('/urls', (re, res) =>{
+app.get('/urls', (req, res) =>{
   const templateVars = {
     username: req.cookies["username"], //username is accessed from the cookies
     urls: urlDatabase,
@@ -123,6 +123,21 @@ app.get("/urls/new", (req, res) => {
     username: req.cookies["username"],
   };
   res.render("urls_new", templateVars);
+});
+
+// Route for the login page (if any)
+app.get("/login", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"], // Add username
+  };
+  res.render("login", templateVars);
+});
+
+
+//POST request to /logout
+app.post("/logout", (req, res) => {
+  res.clearCookie("username"); // this will clear the username cookie
+  res.redirect("/urls"); // this redirects the user back to the /urls page
 });
 
 

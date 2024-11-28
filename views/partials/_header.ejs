@@ -19,16 +19,24 @@
       </div>
 
       <div class="ml-auto">
-          <!-- Show login form when not logged in -->
-        <form method="POST" action="/login" class="form-inline">
-          <input
-            type="text"
-            name="username"
-            placeholder="Enter your username"
-            class="form-control mr-2"
-          />
-          <button class="btn btn-outline-light" type="submit">Login</button>
-        </form>
+        <% if (username) { %>
+          <!-- Displays the username and logout button when logged in -->
+          <span class="text-light mr-3">Logged in as: <%= username %></span>
+          <form method="POST" action="/logout" class="form-inline">
+            <button class="btn btn-outline-light" type="submit">Logout</button>
+          </form>
+        <% } else { %>
+          <!-- Displays the login form when not logged in -->
+          <form method="POST" action="/login" class="form-inline">
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter your username"
+              class="form-control mr-2"
+            />
+            <button class="btn btn-outline-light" type="submit">Login</button>
+          </form>
+        <% } %>
       </div>
     </div>
   </nav>
