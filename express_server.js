@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
+const { getUserByEmail } = require("./helpers");
 const app = express();
 const PORT = 8080; // defines the default port 8080 the app will listen to
 
@@ -48,15 +49,7 @@ const generateRandomString = () => {
   return Array.from({ length: 6 }, () => 
     chars[Math.floor(Math.random() * chars.length)]).join("");
 };
-//helper function to check if the email already exists in the users object
-const findUserByEmail = (email, users) => {
-  for (const userId in users) {
-    if (users[userId].email === email) {
-      return users[userId];
-    }
-  }
-  return null;
-};
+
 // helper function that Filters the URL database to return only the URLs that belong to the logged-in user.
 const urlsForUser = (id) => {
   const filteredURLs = {};
@@ -190,7 +183,7 @@ app.post("/register", (req, res) => {
   if (!email || !password) {
     return res.status(400).send("Email and password cannot be empty!");
   }
-  if (findUserByEmail(email, users)) {
+  if (getUserByEmail(email, users)) {
     return res.status(400).send("Email is already registered.");
   }
   const userId = generateRandomString(); // Generate a unique user ID
@@ -214,7 +207,7 @@ app.get("/login", (req, res) => {
 // POST /login: Handle login
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const user = findUserByEmail(email, users);
+  const user = getUserByEmail(email, users);
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(403).send("Invalid email or password.");
   }
