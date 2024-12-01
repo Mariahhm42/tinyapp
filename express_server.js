@@ -1,12 +1,12 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
 const app = express();
 const PORT = 8080; // defines the default port 8080 the app will listen to
 
 //Middleware
 app.set("view engine", "ejs"); // sets up EJS as the templating engine
-app.use(cookieParser());
+app.use(cookieSession);
 app.use(express.urlencoded({ extended: true })); // Middleware to parse form data
 
 //Databases
@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 
 // GET /urls: Display all URLs for the logged-in user
 app.get("/urls", (req, res) => {
-  const userId = req.cookies.user_id; // Retrieves the user ID from the cookies
+  const userId = req.session.user_id; // Retrieves the user ID from the cookies
   if (!userId) {
     return res.status(401).send("Please log in to view your URLs.");
   }
@@ -84,7 +84,7 @@ app.get("/urls", (req, res) => {
 
 // GET /urls/new: Show form to create a new URL (restricted to users that are logged in)
 app.get("/urls/new", (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   if (!userId) {
     return res.redirect("/login"); //Redirects to login if not logged in
   }
@@ -95,7 +95,7 @@ app.get("/urls/new", (req, res) => {
 // GET /urls/:id: Show details for a specific URL
 app.get("/urls/:id", (req, res) => {
   const { id } = req.params;
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const url = urlDatabase[id];
   if (!url) {
     return res.status(404).send("Short URL not found.");
@@ -127,7 +127,7 @@ app.get("/u/:id", (req, res) => {
 
 // POST /urls: Creates a new short URL
 app.post("/urls", (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   if (!userId) {
     return res.status(401).send("Please log in to create URLs.");
   }
@@ -142,7 +142,7 @@ app.post("/urls", (req, res) => {
 // POST /urls/:id/delete: Delete a URL (restricted to creator of the URLs)
 app.post("/urls/:id/delete", (req, res) => {
   const { id } = req.params;
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const url = urlDatabase[id];
   if (!url) {
     return res.status(404).send("Short URL not found.");
@@ -158,7 +158,7 @@ app.post("/urls/:id/delete", (req, res) => {
 // POST /urls/:id: Update a URL
 app.post("/urls/:id", (req, res) => {
   const { id } = req.params;
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const url = urlDatabase[id];
 
   if (!url) {
@@ -174,7 +174,7 @@ app.post("/urls/:id", (req, res) => {
 
 // GET route to serve the registration page
 app.get("/register", (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const templateVars = { user: users[userId] };
   res.render("register", templateVars);
 });
@@ -201,7 +201,7 @@ app.post("/register", (req, res) => {
 
 //GET route to handle login (Show login page)
 app.get("/login", (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const templateVars = { user: users[userId] };
   res.render("login", templateVars);
 });
