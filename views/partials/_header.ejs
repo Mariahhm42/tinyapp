@@ -20,7 +20,7 @@
 
       <div class="ml-auto">
         <% if (user) { %>
-          <p>Welcome, <%= user.email %>!</p>
+          <span>Logged in as: <%= user.email %></span>
           <form action="/logout" method="POST">
             <button type="submit">Logout</button>
           </form>

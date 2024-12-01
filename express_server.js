@@ -29,13 +29,13 @@ const users = {
   },
 };
 
-///Helpers
+///Helpers function
 // Function to generate 6-character random alphanumeric string
 const generateRandomString = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 };
-
+//helper function to check if the email already exists in the users object
 const findUserByEmail = (email, users) => {
   for (const userId in users) {
     if (users[userId].email === email) {
@@ -129,7 +129,8 @@ app.post("/register", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).send("Email and Password cannot be empty!");
-  }
+  } // sends back an appropriate error message if email/pw is empty
+
 
   if (findUserByEmail(email, users)) {
     return res.status(400).send("Email is already registered!");
@@ -163,10 +164,10 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 });
 
-// POST /logout: Handle logout
+// Updated POST /logout: Handle logout
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id");
-  res.redirect("/urls");
+  res.clearCookie("user_id"); // Clear the user_id cookie
+  res.redirect("/login"); // Redirect the user to the login page after logout
 });
 
 // Start the server
