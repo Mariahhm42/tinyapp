@@ -6,7 +6,12 @@ const PORT = 8080; // defines the default port 8080 the app will listen to
 
 //Middleware
 app.set("view engine", "ejs"); // sets up EJS as the templating engine
-app.use(cookieSession);
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['key1', 'key2'],
+  })
+);
 app.use(express.urlencoded({ extended: true })); // Middleware to parse form data
 
 //Databases
@@ -195,7 +200,7 @@ app.post("/register", (req, res) => {
     email, 
     password: hashedPassword 
   }; 
-  res.cookie("user_id", userId); // Set the user's ID in the cookie
+  req.session.user_id = userId; 
   res.redirect("/urls");
 });
 
@@ -213,13 +218,13 @@ app.post("/login", (req, res) => {
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(403).send("Invalid email or password.");
   }
-  res.cookie("user_id", user.id); // Set the user's ID in the cookie
+  req.session.user_id = user.id; // Set the user's ID in the cookie
   res.redirect("/urls");
 });
 
 // Updated POST /logout: Handle logout
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id"); // Clear the user_id cookie
+  req.session = null;
   res.redirect("/login"); // Redirect the user to the login page after logout
 });
 
