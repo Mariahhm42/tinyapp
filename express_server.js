@@ -1,9 +1,17 @@
+//Required packages 
 const express = require("express");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
 const { getUserByEmail } = require("./helpers");
+
 const app = express();
 const PORT = 8080; // defines the default port 8080 the app will listen to
+
+//databases import
+const users = require('./data/users');
+const urlDatabase = require('./data/urls');
+
+
 
 //Middleware
 app.set("view engine", "ejs"); // sets up EJS as the templating engine
@@ -14,32 +22,6 @@ app.use(
   })
 );
 app.use(express.urlencoded({ extended: true })); // Middleware to parse form data
-
-//Databases
-const urlDatabase = {
-  b6UTxQ: {
-    longURL: "https://www.tsn.ca",
-    userID: "aJ48lW",
-  },
-  i3BoGr: {
-    longURL: "https://www.google.ca",
-    userID: "aJ48lW",
-  },
-};
-
-//Global user object
-const users = {
-  userRandomID: {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: bcrypt.hashSync("purple-monkey-dinosaur", 10),
-  },
-  user2RandomID: {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: bcrypt.hashSync("dishwasher-funk", 10),
-  },
-};
 
 ///Helpers function
 // Function to generate 6-character random alphanumeric string
