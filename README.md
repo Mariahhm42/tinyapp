@@ -37,12 +37,16 @@ TinyApp is a simple multipage app:
 
 ### Dependencies
 - Node.js
-- npm
 - Express
 - EJS
 - bcrypt
 - cookie-parser
 - cookie-session
+
+### devDependencies
+- chai
+- mocha
+- nodemon
 
 ### Installation & Setup
 
